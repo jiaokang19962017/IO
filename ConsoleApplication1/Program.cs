@@ -40,16 +40,64 @@ namespace ConsoleApplication1
 
 
             //判断文件是否存在
-            string path = @"E:\\test\\test1.txt";
-            FileInfo fi = new FileInfo(path);
-            if (fi.Exists) 
+
+            /*  string path = @"E:\\test\\test1.txt";
+              FileInfo file = new FileInfo(path);
+              if (file.Exists) //第一种
+              {
+                  Console.WriteLine("文件存在");
+              }
+              else
+              {
+                  file.Create();
+                  Console.WriteLine("创建成功");
+              }
+              /*   if (File.Exists(path))//第二种
+                 {
+                     Console.WriteLine("文件存在");
+                 }*/
+
+            #region 文件流
+            string path = @"E:\\test\\1.txt";
+            FileStream fs;
+            if (!File.Exists(path))//如果文件不存在
             {
-                Console.WriteLine("文件存在");
+                //写入文件
+                 fs = new FileStream(path, FileMode.Create, FileAccess.Write);
+                StreamWriter sw = new StreamWriter(fs);
+                Console.WriteLine("请输入内容");
+                string s = Console.ReadLine();
+                sw.Write(s);
+                sw.Close();//关闭流
+                fs.Close();
             }
-            if (File.Exists(path))
+            else//如果文件存在
             {
-                Console.WriteLine("文件存在");
+                //读取文件
+                /*  fs = new FileStream(path,FileMode.Open,FileAccess.Read);
+                  StreamReader sr = new StreamReader(fs);
+                  //string str;
+                  //while ((str = sr.ReadLine())!=null)
+                  //{
+                  //Console.WriteLine( str);
+                  //}
+                  Console.WriteLine(sr.ReadToEnd());
+                  sr.Close();
+                  fs.Close();*/
+
+                //追加文件
+                fs = new FileStream(path, FileMode.Append, FileAccess.Write);
+                StreamWriter sw = new StreamWriter(fs);
+                sw.WriteLine("你好12122");
+                sw.Close();
+                fs.Close();
+
+                Console.WriteLine(File.ReadAllText(path));//读取文件
+
             }
+
+
+            #endregion
         }
     }
 }
